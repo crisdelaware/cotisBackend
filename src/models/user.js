@@ -1,16 +1,31 @@
-const moongose = require('mongoose');
+const mongoose = require('mongoose');
 
-const userSchema = new moongose.Schema({
-    username: String,
-    email: String,
-    fullName: String,
+const userSchema = new mongoose.Schema({
+    username: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        lowercase: true,
+    },
+    fullName: {
+        type: String,
+        required: true,
+    },
     shippingAddress: String,
-    phoneNumer: String,
-    password: String
-
+    phoneNumber: String,
+    password: {
+        type: String,
+        required: true,
+        minlength: 8, // Por ejemplo, requerir al menos 8 caracteres
+    },
     // Otros campos de usuario
 });
 
-const User = moongose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

@@ -53,7 +53,35 @@ async function createUser(req, res) {
     }
 }
 
+async function getProfile(req, res) {
+    try {
+        // Aqui obten la informacion del usuario autenticado desde req.user
+        const user = req.user;
+
+        // Agrega registros de depuración para verificar los datos del usuario
+        console.log('Datos del usuario en getProfile:', user);
+
+        // Puedes personalizar esta parte para devolver la informacion especifica del perfil que necesitas
+        const userProfile = {
+            username: user.username,
+            email: user.email,
+            fullName: user.fullName,
+            shippingAddress: user.shippingAddress,
+            phoneNumber: user.phoneNumber,
+            // Otras propiedades de perfil que puedas tener
+        };
+        res.json({ userProfile });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: 'Error al obtener el perfil del usuario'
+        });
+    }
+
+}
+
 module.exports = {
     createUser,
+    getProfile
     // Otras funciones de controlador de usuario (actualizar, eliminar, obtener, etc.)
 };

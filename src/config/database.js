@@ -1,22 +1,29 @@
+require('dotenv').config();
 const mongoose = require('mongoose');
 
-// URL de conexion a la base de datos MongoDB
-const dbUrl = 'mongodb+srv://crisdelaware:1708428b056@cluster0.aocrpq3.mongodb.net/?retryWrites=true&w=majority';
+const dbUrl = 'mongodb+srv://crisdelaware:1708428b056@cluster0.aocrpq3.mongodb.net/comercioElectronico?retryWrites=true&w=majority';
 
 
+// Resto del código de conexión...
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // Opciones adicionales según sea necesario
-  })
-    .then(() => {
-      console.log('Conexión a MongoDB exitosa.');
-    })
-    .catch((error) => {
-      console.error('Error de conexión a MongoDB:', error);
-    });
+})
+.then(() => {
+    console.log('Conexión a MongoDB exitosa.');
+})
+.catch((error) => {
+    console.error('Error de conexión a MongoDB:', error);
+    process.exit(1); // Salir de la aplicación en caso de error grave
+});
 
-// Manejador de eventos para la conexion
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Conexión a MongoDB cerrada debido a la terminación de la aplicación');
+        process.exit(0);
+    });
+});
+
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Error de conexion a MongoDB:'));
