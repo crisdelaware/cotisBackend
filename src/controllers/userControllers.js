@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
+// Funcion para crear el usuario
 async function createUser(req, res) {
     try {
         const { username, email, fullName, shippingAddress, phoneNumber, password } = req.body;
@@ -53,6 +54,7 @@ async function createUser(req, res) {
     }
 }
 
+// Funcion para obtener el perfil
 async function getProfile(req, res) {
     try {
         // Aqui obten la informacion del usuario autenticado desde req.user
@@ -80,8 +82,33 @@ async function getProfile(req, res) {
 
 }
 
+// Funcion para eliminar cuenta
+async function deleteAccount(req, res) {
+    try {
+        const userId = req.user.id;
+        const userEmail = req.user.email;
+        // Buscar y eliminar el usuario por su ID
+        const deletedUser = await User.findByIdAndRemove(userId);
+
+        if(!deletedUser) {
+            return res.status(400).json({
+                message: 'Usuario no encontrado'
+            });
+        }
+
+        res.json({ message: `Cuenta eliminada con exito ${userEmail}` });
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: 'Error al eliminar la cuenta'
+        });
+    }
+}
+
 module.exports = {
     createUser,
-    getProfile
+    getProfile,
+    deleteAccount
     // Otras funciones de controlador de usuario (actualizar, eliminar, obtener, etc.)
 };
