@@ -34,14 +34,20 @@ exports.login = async (req, res) => {
                 username: user.username,
                 email: user.email,
                 fullName: user.fullName,
-                phoneNumber: user.phoneNumber
+                phoneNumber: user.phoneNumber,
+                role: user.role
             },
         };
 
         const token = jwt.sign(payload, configJwt.jwtSecret, { expiresIn: configJwt.jwtExpiresIn });
 
-        // Responder con el token
-        res.json({ token });
+        // Redirigir segun el rol del usuario
+        if(user.role === 'admin') {
+            res.json({ token });
+        } else {
+        // Usuario normal, redirigir a la ruta de usuario normal
+        res.json({ token })
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({

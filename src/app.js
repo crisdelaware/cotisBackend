@@ -1,9 +1,20 @@
 // En app.js
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+
+// Configuración de CORS
+const corsOptions = {
+    origin: 'http://localhost:4200', // Cambia esto al dominio de tu aplicación Angular
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Habilita el intercambio de cookies o encabezados de autenticación
+    optionsSuccessStatus: 204, // Algunas solicitudes CORS envían una solicitud de opciones antes de la solicitud real (preflight), esto indica que está bien.
+  };
+
+  app.use(cors(corsOptions));
 
 // Importar rutas
 const userRoutes = require('./routes/userRoutes');

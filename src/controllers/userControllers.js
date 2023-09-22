@@ -42,7 +42,7 @@ async function createUser(req, res) {
 
         // Crear el usuario con la contraseña cifrada
         const newUser = new User({
-             username, email, fullName, shippingAddress, phoneNumber, password: hashedPassword 
+             username, email, fullName, shippingAddress, phoneNumber, password: hashedPassword,
             });
 
         await newUser.save();
@@ -70,6 +70,7 @@ async function getProfile(req, res) {
             fullName: user.fullName,
             shippingAddress: user.shippingAddress,
             phoneNumber: user.phoneNumber,
+            role: user.role,
             // Otras propiedades de perfil que puedas tener
         };
         res.json({ userProfile });
@@ -80,6 +81,29 @@ async function getProfile(req, res) {
         });
     }
 
+}
+
+
+// Función para obtener el perfil de un administrador
+async function getAdminProfile(req, res) {
+    try {
+        const user = req.user; // Obtiene la información del usuario autenticado desde req.user
+
+        // Puedes personalizar esta parte para devolver información específica del perfil del administrador
+        const adminProfile = {
+            username: user.username,
+            email: user.email,
+            fullName: user.fullName,
+            // Otras propiedades específicas del perfil de administrador
+        };
+
+        res.json({ adminProfile });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: 'Error al obtener el perfil del administrador'
+        });
+    }
 }
 
 // Funcion para eliminar cuenta
@@ -109,6 +133,7 @@ async function deleteAccount(req, res) {
 module.exports = {
     createUser,
     getProfile,
-    deleteAccount
+    deleteAccount,
+    getAdminProfile
     // Otras funciones de controlador de usuario (actualizar, eliminar, obtener, etc.)
 };

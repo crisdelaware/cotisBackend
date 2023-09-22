@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 8, // Por ejemplo, requerir al menos 8 caracteres
     },
+    // Puede ser 'admin' o 'usuario'
+    role: {
+        type: String,
+        default: 'usuario' // Valor predetermiado
+    }
     // Otros campos de usuario
 });
 
