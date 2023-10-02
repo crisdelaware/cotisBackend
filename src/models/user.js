@@ -27,8 +27,9 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'usuario' // Valor predetermiado
-    }
-    // Otros campos de usuario
+    },
+    resetToken: String, // almacenar el token de restablecimiento de contraseña
+    resetTokenExpires: Date, // Fecha de expiracion del token de restablecimiento
 });
 
 const User = mongoose.model('User', userSchema);
